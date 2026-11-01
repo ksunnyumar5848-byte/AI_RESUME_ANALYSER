@@ -100,7 +100,7 @@ def analyze_resume(resume_text,job_description):
 
 """
     response = client.models.generate_content(
-         model="gemini-2.5-flash",
+         model=MODEL,
          contents=f"""
            Instructions:{instructions}
            User Message: {user_messages}
@@ -121,7 +121,7 @@ def analyze_resume(resume_text,job_description):
 
 def generate_final_report(structured_analysis):
 
-    clinet= genai.client(api_key=API_KEY)
+    clinet= genai.Client(api_key=API_KEY)
 
     instructions = """You write short, honest resume feedback for a candidate.
     
@@ -152,8 +152,34 @@ def generate_final_report(structured_analysis):
     - Do not give a numeric score or a percentage.
 """
 
-    user_message="""
+    user_message=f"""
+                   trun this structured data into resume feedback and reply with json 
+                   {json.dumps(structured_analysis,indent=2)}
+    """
+
+    response =  clinet.models.generate_content(
+             model=MODEL,
+             contents=f"""
+               Instructions:{instructions}
+               User Message: {user_message}
+              """,
+             config={
+                "response_mime_type": "application/json"}
+            )
+    
+    report = json.loads(response.text)
 
 
-"""
+    for key,_ in REPORT_SECTION:
+        value=report.get(key)
+
+        if isinstance(value,list):
+            value="\n".join("-" + str(point) for point in value)
+
+            report[key]=value or "Nothing was reported for this section "
+
+
+    
+        
+    
     
