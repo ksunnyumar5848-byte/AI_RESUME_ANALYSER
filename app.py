@@ -41,6 +41,18 @@ def extract_resume_text(uploaded_file):
         return '\n'.join(pages).strip()
 
     if file_name.endswith(".docx"):
-        pass 
+       document=Document(uploaded_file) 
+
+       Paragraphs=[]
+
+       for p in document.Paragraphs:
+           Paragraphs.append(p.text or "")
+
+       return '\n'.join(Paragraphs).strip()   
+
+
+    return "NO INPUT WAS GIVIN AS CV aks user for it "  
+
+
 
 
