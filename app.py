@@ -56,3 +56,37 @@ def extract_resume_text(uploaded_file):
 
 
 
+
+# this methods are analyze resume
+
+
+def analyze_resume(resume_text,job_description):
+    """LLM CALL NUMBER 1 TRUN  the resume and JD structure JSON """
+
+    client =genai.Client.models(API_KEY)
+
+    instructions="""     you compare against job descriptions .. 
+
+    Relpy with json only using exactly there key every value is a list of sort string 
+
+    {
+      "candidate_skills" :[],
+      "candidate_expreience:[],
+      "candidate_qualification":[],
+      "required_skills":[],
+      "preferred_skills":[],
+      "matching_skills":[],
+      "missing_skills":[],
+      "gaps":[]
+    }
+
+
+    Rules:
+    - use only information that actually appears in the resume or the job description 
+    -Never invent skills ,employers, job description , dates .etc,
+    -"missing skills" means the job description aks for and the resume does not mention it 
+    -level a list empty when the text gives you nothing to put it 
+
+"""
+
+
