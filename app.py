@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 from docx import Document
 from pypdf import pdfReader
 from google import genai
+import json
 
 
 load_dotenv()  # this methods are load the env file variable  and read 
@@ -63,7 +64,7 @@ def extract_resume_text(uploaded_file):
 def analyze_resume(resume_text,job_description):
     """LLM CALL NUMBER 1 TRUN  the resume and JD structure JSON """
 
-    client =genai.Client.models(API_KEY)
+    client =genai.Client(api_key=API_KEY)
 
     instructions="""     you compare against job descriptions .. 
 
@@ -88,5 +89,28 @@ def analyze_resume(resume_text,job_description):
     -level a list empty when the text gives you nothing to put it 
 
 """
+    user_messages= f"""
+                     Compare this resume aginst this job description and relpy with the json 
+
+                     RESUME:{resume_text}
+
+                     JOB_DESCRIPTION:
+
+                     {job_description}
+
+"""
+    response = client.models.generate_content(
+         model="gemini-2.5-flash",
+         contents=f"""
+           Instructions:{instructions}
+           User Message: {user_messages}
+          """,
+         config={
+            "response_mime_type": "application/json"}
+        )
+
+    result = json.loads(response.text)
+    
+    return result
 
 
