@@ -23,3 +23,24 @@ REPORT_SECTION=[
     ("overall_summary","Overall_Summary")
 ]
 
+
+def extract_resume_text(uploaded_file):
+
+    """ Return the plain text of the uploaded file like pdf or docx file """
+
+    file_name=uploaded_file.name.lower()
+
+    if file_name.endswith(".pdf"):
+        reader=pdfReader(uploaded_file)
+
+        pages=[]
+
+        for page in reader.pages:
+            pages.append(page.extract_text() or "")
+
+        return '\n'.join(pages).strip()
+
+    if file_name.endswith(".docx"):
+        pass 
+
+
