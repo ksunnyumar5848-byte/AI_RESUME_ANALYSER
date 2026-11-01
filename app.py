@@ -110,7 +110,50 @@ def analyze_resume(resume_text,job_description):
         )
 
     result = json.loads(response.text)
-    
+
     return result
 
 
+
+
+# this are genrate the final output 
+
+
+def generate_final_report(structured_analysis):
+
+    clinet= genai.client(api_key=API_KEY)
+
+    instructions = """You write short, honest resume feedback for a candidate.
+    
+    You receive JSON that was built from a resume and a job description.
+    Reply with JSON only, using exactly these keys. Every value is a string.
+    
+    {
+      "strengths": "",
+      "gaps": "",
+      "missing_or_weak_skills": "",
+      "improvement_suggestions": "",
+      "overall_summary": ""
+    }
+    
+    Rules:
+    - Write the first four values as Markdown bullet lists, one point per line ("- point").
+    - Write "overall_summary" as one short paragraph.
+    - Never leave a value empty. If a section has nothing to report, say so in one bullet,
+      such as "- Nothing further was identified from the provided resume."
+    - Put specific tools and technologies in "missing_or_weak_skills", and put experience,
+      qualifications and responsibilities in "gaps", so the two do not repeat each other.
+    - Base everything on the JSON you are given, and do not invent anything new.
+    - Never use the words "lacks", "lacking", "no experience", "no exposure",
+      "does not know" or "does not have" anywhere, including the overall summary.
+      You only know what this one resume mentions, not what the candidate can really do.
+      Write "Apache Airflow was not identified in the provided resume" and
+      "The resume does not show the 3+ years of analytics experience the role asks for".
+    - Do not give a numeric score or a percentage.
+"""
+
+    user_message="""
+
+
+"""
+    
