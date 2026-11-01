@@ -15,3 +15,11 @@ MODEL=os.getenv("GEMINI_API_MODEL","gemini-3.6-flash")
 
 
 
+REPORT_SECTION=[
+    ("strengths","Strengths"),
+    ("gaps","Gaps"),
+    ("missing_or_weekskills","Missing_or_weekskills"),
+    ("improvement_suggestion","Improvement_or_suggestion"),
+    ("overall_summary","Overall_Summary")
+]
+
