@@ -176,10 +176,28 @@ def generate_final_report(structured_analysis):
         if isinstance(value,list):
             value="\n".join("-" + str(point) for point in value)
 
-            report[key]=value or "Nothing was reported for this section "
+        report[key]=value or "Nothing was reported for this section "
+    return report
 
 
-    
-        
+def create_dwonloadable_report(final_report):
+    """
+       build the work down text for resume_analayzer download
+
+    """
+
+    lines=["resume Analysis"]
+
+    for key, heading in REPORT_SECTION:
+        lines.append(f"# {heading}")
+        lines.append(final_report)
+    return "\n \n ".join(lines)    
+
+
+
+
+
+     
+
     
     
